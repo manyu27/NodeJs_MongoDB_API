@@ -9,7 +9,7 @@ var repo = require('../repository/repository');
 exports.view = function(req,res){
     var dbName = req.params.dbName;
     repo.GetAllMembers(dbName,function (err,result){
-        if(result){
+        if(result && result.length != 0){
             res.json(
                 {   Success : true,
                     Message : "Members successfully fetched",
@@ -20,7 +20,7 @@ exports.view = function(req,res){
         else{
             res.json(
                 {   Success : false,
-                    Message : "Members could not be fetched.\n" + err
+                    Message : "There were no members found for the organization : " + dbName
                 }
             );
         }        

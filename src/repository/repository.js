@@ -32,34 +32,47 @@ exports.InsertComments = function (dbName,model,callback){
 /** This method is responsible for fetching all the comments
  * from the "Comment" collection of the queried organization's database.
  */
-exports.GetAllComments = function (dbName,callback){
+exports.GetAllComments = async function (dbName,callback){
   var dbo = mongoClient.db(dbName);
   var result = [];
   var collection = dbo.collection('Comment');
-  collection.find().toArray((err, items) => {
-    if(err){
-      callback(err,null);
-    }
-    items.forEach(element => {
-      result.push(element.comment)
+  var count = await ifDBExists(collection);
+  if(count == 0){
+    callback(null,null);
+  }
+  else{
+    collection.find().toArray((err, items) => {
+      if(err){
+        callback(err,null);
+      }
+      items.forEach(element => {
+        result.push(element.comment)
+      });
+      callback(null,result);
     });
-    callback(null,result);
-  });
+  }
+  
 }
 
 
 /** This method is responsible for soft deleting all the comments
  * from the "Comment" collection of the queried organization's database.
 */
-exports.DeleteComments = function (dbName,callback) {
+exports.DeleteComments = async function (dbName,callback) {
   var dbo = mongoClient.db(dbName);
   var collection = dbo.collection('Comment');
-  var softDelColl = collection.find({});
-  softDelColl.forEach(function(doc){
+  var count = await collection.countDocuments({});
+ 
+  if(count == 0){
+    callback("There does not exist any comments for the organization : "+dbName);
+  }
+  else{
+    collection.find({}).forEach(function(doc){
     dbo.collection('Archived').insertOne(doc); // Inserts the document into "Archive" collection
     collection.deleteOne(doc);    // Deleted the document from the "Comment" collection
-  });
-  callback("Deleted comments");
+  });  
+     callback("Deleted comments");
+  }      
 }
 
 
@@ -81,16 +94,26 @@ exports.InsertMembers = function (dbName,model,callback){
 /** This method is responsible for fetching all the members
  * from the "Members" collection of the queried organization's database.
  */
-exports.GetAllMembers = function (dbName,callback){
+exports.GetAllMembers = async function (dbName,callback){
   var dbo = mongoClient.db(dbName);
   var collection = dbo.collection('Members');
-  collection.find().sort({followers : -1}).toArray((err,items)=>{ // Sorts in descending order by the number of the followers a member has
-    if(err){
-      callback(err,null);      
-    }
-    callback(null,items);
-  });  
+  var count = await ifDBExists(collection);
+  if(count == 0){
+    callback(null,null);
   }
+  else{
+    collection.find().sort({followers : -1}).toArray((err,items)=>{ // Sorts in descending order by the number of the followers a member has
+      if(err){
+        callback(err,null);      
+      }
+      callback(null,items);
+    });  
+  }  
+}
+
+async function ifDBExists(collection){
+  return await collection.countDocuments({});
+}
 
 
 

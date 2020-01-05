@@ -9,7 +9,7 @@ var repo = require('../repository/repository');
 exports.view = function(req,res){
     var dbName = req.params.dbName;
     repo.GetAllComments(dbName,function (err,result){
-        if(result){
+        if(result && result.length != 0){
             res.json(
                 {   Success : true,
                     Message : "Comments successfully fetched.",
@@ -20,7 +20,7 @@ exports.view = function(req,res){
         else{
             res.json(
                 {   Success : false,
-                    Message : "Comments could not be fetched.\n" + err
+                    Message : "There were no comments found for the organization :" + dbName
                 }
             );
         }       

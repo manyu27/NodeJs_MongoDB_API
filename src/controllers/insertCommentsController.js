@@ -7,7 +7,17 @@ var repo = require('./../repository/repository');
 
 
 exports.new = function(req,res){
-    var dbModel = {comment : req.body.comment}
+    
+    var comment = req.body.comment;
+    if(Object.keys(req.body).length === 0 || comment === ""){
+        res.status(400);
+        res.send({
+            Success : false,
+            Message : "Please provide a comment."
+        });
+        return;
+    }
+    var dbModel = {comment : comment}
     var dbName = req.params.dbName;
 
     repo.InsertComments(dbName,dbModel,function (err,result){
@@ -16,6 +26,7 @@ exports.new = function(req,res){
                     Success : true,
                     Message : "Comment successfully saved."
                 });
+                return;
         }
         else{
             res.json({
