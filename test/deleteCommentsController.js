@@ -1,4 +1,3 @@
-
 process.env.NODE_ENV = 'test';
 
 let chai = require('chai');
@@ -13,7 +12,7 @@ let app = require('../app');
 
 chai.use(chaiHttp);
 
-describe('GET NO DATA',() => {  
+describe('DELETE NOTHING',() => {  
     before((done)=>{        
         mongoDb.connect(process.env.CONN_STRING,{ useNewUrlParser: true,useUnifiedTopology: true},(err,client) => {
           var mongoClient = client;
@@ -23,22 +22,23 @@ describe('GET NO DATA',() => {
         });  
       done();
 });      
-    it('should return no data and false success',((done)=>{
+    it('should not delete anything since no comment exists',((done)=>{
         chai.request(app)
-        .get('/orgs/Xendit/comments')
+        .del('/orgs/Xendit/comments')
         .end((err,res) => {
             res.should.have.status(200);
-            res.body.Success.should.be.eql(false);
-            res.body.Message.should.be.eql("There were no comments found for the organization :Xendit")
+            res.body.Success.should.be.eql(true);
+            res.body.Message.should.be.eql("There does not exist any comments for the organization : Xendit")
             done();
         });        
     }));
 });
 
-describe('GET EXACTLY ONE COMMENT',() => {  
+
+describe('DELETE ONE COMMENT',() => {  
     
     let model = { comment : "Test comment"};
-     it('should return one comment and true success',((done)=>{
+     it('should return true success for the comment be deleted',((done)=>{
         chai.request(app)
         .post('/orgs/Xendit/comments')
         .send(model)
@@ -52,13 +52,14 @@ describe('GET EXACTLY ONE COMMENT',() => {
             res.body.Success.should.be.eql(true);
             res.body.Message.should.be.eql("Comments successfully fetched.");
             res.body.Data.length.should.be.eql(1);
+        });
+        chai.request(app)
+        .del('/orgs/Xendit/comments')
+        .end((err,res) => {
+            res.should.have.status(200);
+            res.body.Success.should.be.eql(true);
+            res.body.Message.should.be.eql("Comments were successfully deleted.");
             done();
-        });        
+        });             
     }));
 });
-
-
-
-
-           
-
