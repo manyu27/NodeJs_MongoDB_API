@@ -22,9 +22,11 @@ exports.new = function(req,res){
                     Message : "Member successfully saved."
                 });
             }
-            res.json({
-                Success : false,
-                Message : "Member could not be saved." + err
-            });
+            else{
+                res.json({
+                    Success : false,
+                    Message : "Member could not be saved." + err
+                });
+            }            
            });
         };

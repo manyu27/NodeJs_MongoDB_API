@@ -17,9 +17,11 @@ exports.new = function(req,res){
                     Message : "Comment successfully saved."
                 });
         }
-        res.json({
-            Success : false,
-            Message : "Comment could not be saved. \n" + err
-        });
+        else{
+            res.json({
+                Success : false,
+                Message : "Comment could not be saved. \n" + err
+            });
+        }        
     });
 };

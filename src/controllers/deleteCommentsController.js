@@ -14,10 +14,12 @@ exports.delete = function(req,res){
                 }
             );
         }
-        res.json(
-            {   Success : false,
-                Message : "Comments were not deleted. Error occurred."
-            }
-        );
+        else{
+            res.json(
+                {   Success : false,
+                    Message : "Comments were not deleted. Error occurred."
+                }
+            );
+        }        
     });   
 }

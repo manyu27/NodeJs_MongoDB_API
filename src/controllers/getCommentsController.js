@@ -17,11 +17,13 @@ exports.view = function(req,res){
                 }
             );
         }
-        res.json(
-            {   Success : false,
-                Message : "Comments could not be fetched.\n" + err
-            }
-        );
+        else{
+            res.json(
+                {   Success : false,
+                    Message : "Comments could not be fetched.\n" + err
+                }
+            );
+        }       
     });
    
 };
