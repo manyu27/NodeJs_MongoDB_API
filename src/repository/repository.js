@@ -71,7 +71,7 @@ exports.DeleteComments = async function (dbName,callback) {
     dbo.collection('Archived').insertOne(doc); // Inserts the document into "Archive" collection
     collection.deleteOne(doc);    // Deleted the document from the "Comment" collection
   });  
-     callback("Deleted comments");
+     callback("Comments were successfully deleted.");
   }      
 }
 
