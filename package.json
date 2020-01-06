@@ -17,6 +17,7 @@
     "express": "^4.17.1",
     "mocha": "^6.2.2",
     "mongodb": "^3.4.1",
-    "mongoose": "^5.8.4"
+    "mongoose": "^5.8.4",
+    "serverless-http": "^2.3.0"
   }
 }
