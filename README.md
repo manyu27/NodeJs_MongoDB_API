@@ -63,3 +63,6 @@ POST request accepts json object as
 against the <orgs> database to store the member data in MongoDB collection.
 GET request returns all the members from the <orgs> database in descending order by the number of the followers the member has.
 
+# Logs
+
+Logs can be found in a file called "default.log" in the app directory.
