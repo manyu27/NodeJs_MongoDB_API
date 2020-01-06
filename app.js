@@ -5,6 +5,8 @@
 let express = require('express');
 const sls = require('serverless-http')
 require('dotenv').config(); // To load all the environment variables from the .env file
+const log = require('log-to-file'); //logging the status
+
 
 
 let app = express();
@@ -19,12 +21,14 @@ app.use(bodyParser.urlencoded({
  }));
 app.use(bodyParser.json());
 
-app.get('/',(req,res) => res.send("Connected to the server"));
+app.get('/',(req,res) => 
+res.send("Connected to the server"));
 
 app.use('/orgs',routes);
 
 
 module.exports = app.listen(port, function () {
+    log("Server is running ");
     console.log("Running server on port " + port);
 });
 

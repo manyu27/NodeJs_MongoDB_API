@@ -13,12 +13,12 @@ router.get('/',function(req,res){
         });
 });
 
-router.route('/:dbName/comments')
+router.route('/:orgName/comments')
         .post(postController.new)
         .get(getController.view)
         .delete(deleteController.delete);
         
-router.route('/:dbName/members')
+router.route('/:orgName/members')
         .post(insertMembersController.new)
         .get(getMembersController.view);
 

@@ -18,8 +18,8 @@ mongoDb.connect(connString,{ useNewUrlParser: true,useUnifiedTopology: true},(er
 /** This method is responsible for inserting the comment
  * in the "Comment" collection of the queried organization's database.
  */
-exports.InsertComments = function (dbName,model,callback){
-       var dbo = mongoClient.db(dbName);
+exports.InsertComments = function (orgName,model,callback){
+       var dbo = mongoClient.db(orgName);
       var collection = dbo.collection(stringConstants.Comments_Collection);
       collection.insertOne(model, (err, result) => {
           if(err){
@@ -33,8 +33,8 @@ exports.InsertComments = function (dbName,model,callback){
 /** This method is responsible for fetching all the comments
  * from the "Comment" collection of the queried organization's database.
  */
-exports.GetAllComments = async function (dbName,callback){
-  var dbo = mongoClient.db(dbName);
+exports.GetAllComments = async function (orgName,callback){
+  var dbo = mongoClient.db(orgName);
   var result = [];
   var collection = dbo.collection(stringConstants.Comments_Collection);
   var count = await ifDBExists(collection);
@@ -59,13 +59,13 @@ exports.GetAllComments = async function (dbName,callback){
 /** This method is responsible for soft deleting all the comments
  * from the "Comment" collection of the queried organization's database.
 */
-exports.DeleteComments = async function (dbName,callback) {
-  var dbo = mongoClient.db(dbName);
+exports.DeleteComments = async function (orgName,callback) {
+  var dbo = mongoClient.db(orgName);
   var collection = dbo.collection(stringConstants.Comments_Collection);
   var count = await collection.countDocuments({});
  
   if(count == 0){
-    callback(stringConstants.No_Comments+dbName);
+    callback(stringConstants.No_Comments+orgName);
   }
   else{
     collection.find({}).forEach(function(doc){
@@ -80,8 +80,8 @@ exports.DeleteComments = async function (dbName,callback) {
 /** This method is responsible for inserting the member's data
  * in the "Members" collection of the queried organization's database.
  */
-exports.InsertMembers = function (dbName,model,callback){
-  var dbo = mongoClient.db(dbName);
+exports.InsertMembers = function (orgName,model,callback){
+  var dbo = mongoClient.db(orgName);
  var collection = dbo.collection(stringConstants.Members_Collection);
  collection.insertOne(model, (err, result) => {
      if(err){
@@ -95,8 +95,8 @@ exports.InsertMembers = function (dbName,model,callback){
 /** This method is responsible for fetching all the members
  * from the "Members" collection of the queried organization's database.
  */
-exports.GetAllMembers = async function (dbName,callback){
-  var dbo = mongoClient.db(dbName);
+exports.GetAllMembers = async function (orgName,callback){
+  var dbo = mongoClient.db(orgName);
   var collection = dbo.collection(stringConstants.Members_Collection);
   var count = await ifDBExists(collection);
   if(count == 0){

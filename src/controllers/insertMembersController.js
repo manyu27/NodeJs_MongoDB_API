@@ -41,9 +41,9 @@ exports.new = function(req,res){
                 following : req.body.following
              }
 
-    var dbName = req.params.dbName;
+    var orgName = req.params.orgName;
 
-    repo.InsertMembers(dbName,dbModel,function (err,result){
+    repo.InsertMembers(orgName,dbModel,function (err,result){
         if(result){
             res.json({
                     Success : true,

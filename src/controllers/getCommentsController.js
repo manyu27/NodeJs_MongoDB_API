@@ -5,12 +5,14 @@
 
 var repo = require('../repository/repository');
 var stringConstants = require('./../stringConstants');
+const log = require('log-to-file'); //logging the status
 
 
 exports.view = function(req,res){
-    var dbName = req.params.dbName;
-    repo.GetAllComments(dbName,function (err,result){
+    var orgName = req.params.orgName;
+    repo.GetAllComments(orgName,function (err,result){
         if(result && result.length != 0){
+            log("Comments fetched for :"+orgName);
             res.json(
                 {   Success : true,
                     Message : stringConstants.Comments_Fetch_Success,
@@ -19,9 +21,10 @@ exports.view = function(req,res){
             );
         }
         else{
+            log("Comments not found for :"+orgName);
             res.json(
                 {   Success : false,
-                    Message : stringConstants.Comments_Not_Found + dbName
+                    Message : stringConstants.Comments_Not_Found + orgName
                 }
             );
         }       
