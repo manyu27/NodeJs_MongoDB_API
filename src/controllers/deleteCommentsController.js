@@ -3,6 +3,8 @@
  *  to soft delete the comments from the database.
  */
 var repo = require('./../repository/repository');
+var stringConstants = require('./../stringConstants');
+
 
 exports.delete = function(req,res){
     var dbName = req.params.dbName; /** Database name is fetched from the endpoint */
@@ -17,7 +19,7 @@ exports.delete = function(req,res){
         else{
             res.json(
                 {   Success : false,
-                    Message : "Comments were not deleted. Error occurred."
+                    Message : stringConstants.Comments_No_Del
                 }
             );
         }        

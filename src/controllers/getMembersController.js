@@ -4,6 +4,7 @@
  */
 
 var repo = require('../repository/repository');
+var stringConstants = require('./../stringConstants');
 
 
 exports.view = function(req,res){
@@ -12,7 +13,7 @@ exports.view = function(req,res){
         if(result && result.length != 0){
             res.json(
                 {   Success : true,
-                    Message : "Members successfully fetched",
+                    Message : stringConstants.Members_Fetch_success,
                     Data : result
                 }
             );
@@ -20,7 +21,7 @@ exports.view = function(req,res){
         else{
             res.json(
                 {   Success : false,
-                    Message : "There were no members found for the organization : " + dbName
+                    Message : stringConstants.Members_Not_Found + dbName
                 }
             );
         }        

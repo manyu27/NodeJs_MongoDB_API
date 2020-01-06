@@ -5,6 +5,7 @@
  */
 
 var mongoDb = require('mongodb').MongoClient;
+var stringConstants = require('./../stringConstants');
 var connString = process.env.CONN_STRING;
 var mongoClient = null;
 
@@ -19,7 +20,7 @@ mongoDb.connect(connString,{ useNewUrlParser: true,useUnifiedTopology: true},(er
  */
 exports.InsertComments = function (dbName,model,callback){
        var dbo = mongoClient.db(dbName);
-      var collection = dbo.collection('Comment');
+      var collection = dbo.collection(stringConstants.Comments_Collection);
       collection.insertOne(model, (err, result) => {
           if(err){
             callback(err,null); // If there occurs an error, send back the error to the controller
@@ -35,7 +36,7 @@ exports.InsertComments = function (dbName,model,callback){
 exports.GetAllComments = async function (dbName,callback){
   var dbo = mongoClient.db(dbName);
   var result = [];
-  var collection = dbo.collection('Comment');
+  var collection = dbo.collection(stringConstants.Comments_Collection);
   var count = await ifDBExists(collection);
   if(count == 0){
     callback(null,null);
@@ -60,18 +61,18 @@ exports.GetAllComments = async function (dbName,callback){
 */
 exports.DeleteComments = async function (dbName,callback) {
   var dbo = mongoClient.db(dbName);
-  var collection = dbo.collection('Comment');
+  var collection = dbo.collection(stringConstants.Comments_Collection);
   var count = await collection.countDocuments({});
  
   if(count == 0){
-    callback("There does not exist any comments for the organization : "+dbName);
+    callback(stringConstants.No_Comments+dbName);
   }
   else{
     collection.find({}).forEach(function(doc){
-    dbo.collection('Archived').insertOne(doc); // Inserts the document into "Archive" collection
+    dbo.collection(stringConstants.Archived_Collecetion).insertOne(doc); // Inserts the document into "Archive" collection
     collection.deleteOne(doc);    // Deleted the document from the "Comment" collection
   });  
-     callback("Comments were successfully deleted.");
+     callback(stringConstants.Comments_Del);
   }      
 }
 
@@ -81,7 +82,7 @@ exports.DeleteComments = async function (dbName,callback) {
  */
 exports.InsertMembers = function (dbName,model,callback){
   var dbo = mongoClient.db(dbName);
- var collection = dbo.collection('Members');
+ var collection = dbo.collection(stringConstants.Members_Collection);
  collection.insertOne(model, (err, result) => {
      if(err){
        callback(err,null);
@@ -96,7 +97,7 @@ exports.InsertMembers = function (dbName,model,callback){
  */
 exports.GetAllMembers = async function (dbName,callback){
   var dbo = mongoClient.db(dbName);
-  var collection = dbo.collection('Members');
+  var collection = dbo.collection(stringConstants.Members_Collection);
   var count = await ifDBExists(collection);
   if(count == 0){
     callback(null,null);

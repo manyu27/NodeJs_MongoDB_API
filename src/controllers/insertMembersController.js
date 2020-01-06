@@ -4,13 +4,14 @@
  */
 
 var repo = require('../repository/repository');
+var stringConstants = require('./../stringConstants');
 
 exports.new = function(req,res){
     if(Object.keys(req.body).length === 0){
         res.status(400);
         res.send({
             Success : false,
-            Message : "Invalid input."
+            Message : stringConstants.Invalid_Request
         });
         return;
     }
@@ -21,7 +22,7 @@ exports.new = function(req,res){
         res.status(400);
         res.send({
             Success : false,
-            Message : "Please provide valid login detail."
+            Message : stringConstants.Invalid_Login
         });
         return;
     }
@@ -29,7 +30,7 @@ exports.new = function(req,res){
         res.status(400);
         res.send({
             Success : false,
-            Message : "Please provide valid avatar URL."
+            Message : stringConstants.Invalid_AvatarUrl
         });
         return;
     }
@@ -46,14 +47,14 @@ exports.new = function(req,res){
         if(result){
             res.json({
                     Success : true,
-                    Message : "Member successfully saved."
+                    Message :stringConstants.Member_Saved_Success
                 });
                 return;
             }
             else{
                 res.json({
                     Success : false,
-                    Message : "Member could not be saved." + err
+                    Message : stringConstants.Member_Saved_Fail + err
                 });
                 return;
             }            

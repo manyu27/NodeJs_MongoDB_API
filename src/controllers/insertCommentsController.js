@@ -4,7 +4,7 @@
  */
 
 var repo = require('./../repository/repository');
-
+var stringConstants = require('./../stringConstants');
 
 exports.new = function(req,res){
     
@@ -13,7 +13,7 @@ exports.new = function(req,res){
         res.status(400);
         res.send({
             Success : false,
-            Message : "Please provide a comment."
+            Message : stringConstants.Empty_Comment
         });
         return;
     }
@@ -24,14 +24,14 @@ exports.new = function(req,res){
         if(result){
             res.json({
                     Success : true,
-                    Message : "Comment successfully saved."
+                    Message : stringConstants.Comments_Saved_Success
                 });
                 return;
         }
         else{
             res.json({
                 Success : false,
-                Message : "Comment could not be saved. \n" + err
+                Message : stringConstants.Comments_Saved_Fail + err
             });
         }        
     });
