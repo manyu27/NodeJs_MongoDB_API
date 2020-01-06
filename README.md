@@ -34,3 +34,32 @@ $ npm start
 ```
 $ npm test
 ```
+
+# Testing the endpoints
+
+There are 2 endpoints deployed once the application is running :
+1. /orgs/{orgName}/comments
+2. /orgs/{orgName}/members
+ 
+The "comments" endpoint accepts POST,GET and DELETE requests. 
+POST request accepts json object as 
+```
+{comment : "SOME COMMENT"}
+```
+against the <orgs> database to store the comment in MongoDB collection.
+GET request returns all the comments from the <orgs> database.
+DELETE request soft deletes all the comments from the "Comments" collection and saves all of them to "ARCHIVE" collection.
+  
+The "members" endpoint accepts POST and GET requests.
+POST request accepts json object as 
+```
+{
+	"login":"login detail",
+	"avatarUrl":"avatar url",
+	"followers":30,
+	"following":25
+}
+```
+against the <orgs> database to store the member data in MongoDB collection.
+GET request returns all the members from the <orgs> database in descending order by the number of the followers the member has.
+
